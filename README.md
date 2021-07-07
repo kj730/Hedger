@@ -5,3 +5,4 @@ If there is a tick, then it compares the sendOrder price with the tick price. De
 If it is lower for a buy or higher for a sell within the timeframe, then a counter for a favorable event goes up by one, and the time of that event is saved.
 If there is a sendOrder and there is not a favorable event within the timeframe, then the counter for a non favorable event goes up.
 If there is another sendOrder within the timeframe, then the program updates its values for the new sendOrder
+The .idea contains PyCharm files for the Skeeter repository
