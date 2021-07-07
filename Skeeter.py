@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 TIME_COL = 0
 
-
+#counter class that is given a file, seconds, and price as parameters
 class Counter:
     def __init__(self, filename, seconds_for_favorable, price_for_favorable):
         self.filename = filename
@@ -20,6 +20,8 @@ class Counter:
         self.order_restart = 0
         # 09:54:14.893877 | 1357428480 | IN | AMOrderMgr::sendOrder() - sell 7 NG1Q @ 3.79300000, prem = 3.79375000, thd = 0.00000000, uly = 3.79375000(PREPARED=725)
         # 09:54:14.894421|1357428480|IN|ETToolSkeeter::process_tick: Ticker=3.793000000 NG Toes=0.00
+    # start method runs the search_for_favorable and get_order_details method to count the number of favorable and
+    # non favorable events, as well as how many times there was a new sendOrder in a given time
 
     def start(self):
         try:
@@ -40,6 +42,10 @@ class Counter:
                 self.get_order_details(line, self.order_pos)
                 self.have_order = True
                 continue
+    # search_for_favorable method finds if a sendOrder price has become favorable or not favorable within a given time,
+    # or if there was a new sendOrder in a given time. If the tick is within the timeframe, if the price is lower than
+    # the sendOrder price for a buy or higher for a sell, then the counter adds a favorable event happening. If this
+    # does not happen in the timeframe, then the counter for a not favorable event goes up
 
     def search_for_favorable(self, line):
         splitter = line.split('|')
@@ -47,9 +53,9 @@ class Counter:
         tick_pos = line.find("process_tick:")
         temp_order_pos = line.find("sendOrder()")
         if temp_time >= self.order_time + timedelta(seconds=self.seconds_for_favorable):
-                self.not_favorable += 1
-                self.have_order = False
-                return
+            self.not_favorable += 1
+            self.have_order = False
+            return
         elif tick_pos > -1:
             ticker_pos = line.find("Ticker=", tick_pos)
             tick_price = float(line[ticker_pos + 7:ticker_pos + 12])
@@ -58,7 +64,7 @@ class Counter:
                     self.favorable += 1
                     self.time_list.append(temp_time)
                     self.have_order = False
-            elif self.isBuy == False:
+            elif not self.isBuy:
                 if tick_price >= self.price + self.price_for_favorable:
                     self.favorable += 1
                     self.time_list.append(temp_time)
@@ -67,6 +73,8 @@ class Counter:
             self.get_order_details(line, temp_order_pos)
             self.order_restart += 1
             return
+    # the get_order_details method is given a line and a position in the line as a parameter and searches and saves
+    # values from the line for the Counter class variables.
 
     def get_order_details(self, line, order_pos):
         splitter = line.split('|')
