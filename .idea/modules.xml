@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../ErrCatch/.idea/ErrCatch.iml" filepath="$PROJECT_DIR$/../ErrCatch/.idea/ErrCatch.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/Skeeter.iml" filepath="$PROJECT_DIR$/.idea/Skeeter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Strike_Vals/.idea/Strike_Vals.iml" filepath="$PROJECT_DIR$/../Strike_Vals/.idea/Strike_Vals.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../WorkProjects/.idea/WorkProjects.iml" filepath="$PROJECT_DIR$/../WorkProjects/.idea/WorkProjects.iml" />
     </modules>
   </component>
 </project>

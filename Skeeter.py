@@ -17,7 +17,7 @@ class Counter:
         self.favorable = 0
         self.not_favorable = 0
         self.time_list = []
-        self.temp_favorable = 0
+        self.order_restart = 0
         # 09:54:14.893877 | 1357428480 | IN | AMOrderMgr::sendOrder() - sell 7 NG1Q @ 3.79300000, prem = 3.79375000, thd = 0.00000000, uly = 3.79375000(PREPARED=725)
         # 09:54:14.894421|1357428480|IN|ETToolSkeeter::process_tick: Ticker=3.793000000 NG Toes=0.00
 
@@ -38,7 +38,6 @@ class Counter:
             self.order_pos = line.find("sendOrder()")
             if self.order_pos > -1:
                 self.get_order_details(line, self.order_pos)
-                self.temp_favorable = 0
                 self.have_order = True
                 continue
 
@@ -48,8 +47,8 @@ class Counter:
         tick_pos = line.find("process_tick:")
         temp_order_pos = line.find("sendOrder()")
         if temp_time >= self.order_time + timedelta(seconds=self.seconds_for_favorable):
-            if self.temp_favorable == 0:
                 self.not_favorable += 1
+                self.have_order = False
                 return
         elif tick_pos > -1:
             ticker_pos = line.find("Ticker=", tick_pos)
@@ -57,17 +56,16 @@ class Counter:
             if self.isBuy:
                 if tick_price <= self.price - self.price_for_favorable:
                     self.favorable += 1
-                    self.temp_favorable += 1
                     self.time_list.append(temp_time)
+                    self.have_order = False
             elif self.isBuy == False:
                 if tick_price >= self.price + self.price_for_favorable:
                     self.favorable += 1
-                    self.temp_favorable += 1
                     self.time_list.append(temp_time)
+                    self.have_order = False
         elif temp_order_pos > -1:
             self.get_order_details(line, temp_order_pos)
-            self.temp_favorable = 0
-            self.have_order = True
+            self.order_restart += 1
             return
 
     def get_order_details(self, line, order_pos):
@@ -79,7 +77,8 @@ class Counter:
         else:
             self.isBuy = False
         amp_pos = line.find("@")
-        price = float(line[amp_pos + 2:amp_pos + 7])
+        self.price = float(line[amp_pos + 2:amp_pos + 7])
+        print("order time = ", self.order_time, ". price = ", self.price)
 
     def getFavorable(self):
         return self.favorable
@@ -90,6 +89,8 @@ class Counter:
     def getFavorableTimeList(self):
         return self.time_list
 
+    def getRestartCounter(self):
+        return self.order_restart
 
 def format_output(time_list):
     for x in time_list:
@@ -111,7 +112,8 @@ def main():
     num_favorable = counterClass.getFavorable()
     num_not_favorable = counterClass.getNotFavorable()
     time_list = counterClass.getFavorableTimeList()
-    print(num_favorable, "/", num_not_favorable)
+    restart = counterClass.getRestartCounter()
+    print(num_favorable, "/", num_not_favorable, "/", restart)
     # format_output(time_list)
 
 
