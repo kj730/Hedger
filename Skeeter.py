@@ -3,7 +3,9 @@ from datetime import datetime, timedelta
 
 TIME_COL = 0
 
-#counter class that is given a file, seconds, and price as parameters
+# counter class that is given a file, seconds, and price as parameters
+
+
 class Counter:
     def __init__(self, filename, seconds_for_favorable, price_for_favorable):
         self.filename = filename
@@ -18,6 +20,7 @@ class Counter:
         self.not_favorable = 0
         self.time_list = []
         self.order_restart = 0
+        self.temp_counter = 0
         # 09:54:14.893877 | 1357428480 | IN | AMOrderMgr::sendOrder() - sell 7 NG1Q @ 3.79300000, prem = 3.79375000, thd = 0.00000000, uly = 3.79375000(PREPARED=725)
         # 09:54:14.894421|1357428480|IN|ETToolSkeeter::process_tick: Ticker=3.793000000 NG Toes=0.00
     # start method runs the search_for_favorable and get_order_details method to count the number of favorable and
@@ -77,6 +80,7 @@ class Counter:
     # values from the line for the Counter class variables.
 
     def get_order_details(self, line, order_pos):
+        self.temp_counter += 1
         splitter = line.split('|')
         self.order_time = datetime.strptime(splitter[TIME_COL][0:8], '%H:%M:%S')
         order_type_pos = line.find("buy", order_pos)
@@ -86,7 +90,7 @@ class Counter:
             self.isBuy = False
         amp_pos = line.find("@")
         self.price = float(line[amp_pos + 2:amp_pos + 7])
-        print("order time = ", self.order_time, ". price = ", self.price)
+
 
     def getFavorable(self):
         return self.favorable
@@ -99,6 +103,9 @@ class Counter:
 
     def getRestartCounter(self):
         return self.order_restart
+    def getTempCounter(self):
+        return self.temp_counter
+
 
 def format_output(time_list):
     for x in time_list:
@@ -121,8 +128,9 @@ def main():
     num_not_favorable = counterClass.getNotFavorable()
     time_list = counterClass.getFavorableTimeList()
     restart = counterClass.getRestartCounter()
-    print(num_favorable, "/", num_not_favorable, "/", restart)
-    # format_output(time_list)
+    temp_var = counterClass.getTempCounter()
+    format_output(time_list)
+    print("Favorable Count:", num_favorable, "Unfavorable Count:", num_not_favorable, "repeat Order:", restart, "Total Send Order:", temp_var)
 
 
 if __name__ == "__main__":
