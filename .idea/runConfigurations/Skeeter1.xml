@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Skeeter" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+  <configuration default="false" name="Skeeter1" type="PythonConfigurationType" factoryName="Python">
     <module name="Skeeter" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
@@ -12,7 +12,7 @@
     <option name="ADD_CONTENT_ROOTS" value="true" />
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Skeeter.py" />
-    <option name="PARAMETERS" value="$PROJECT_DIR$/FBKNG1.General.20210628.log 2 .002" />
+    <option name="PARAMETERS" value="$PROJECT_DIR$/FBKNG1.General.20210707.log 2 .002" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <option name="EMULATE_TERMINAL" value="false" />
     <option name="MODULE_MODE" value="false" />
