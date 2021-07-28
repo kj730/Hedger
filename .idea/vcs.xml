@@ -2,6 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../ErrCatch/ErrCatch" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../Strike_Vals" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../WorkProjects" vcs="Git" />
   </component>
