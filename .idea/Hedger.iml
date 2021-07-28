@@ -9,5 +9,6 @@
     <orderEntry type="module" module-name="ErrCatch" />
     <orderEntry type="module" module-name="WorkProjects" />
     <orderEntry type="module" module-name="Strike_Vals" />
+    <orderEntry type="module" module-name="ErrCatch" />
   </component>
 </module>
